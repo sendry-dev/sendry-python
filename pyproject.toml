@@ -39,8 +39,8 @@ dev = [
 [project.urls]
 Homepage = "https://sendry.online"
 Documentation = "https://docs.sendry.online/sdk/python"
-Repository = "https://github.com/sendry/sendry-python"
-"Bug Tracker" = "https://github.com/sendry/sendry-python/issues"
+Repository = "https://github.com/sendry-dev/sendry-python"
+"Bug Tracker" = "https://github.com/sendry-dev/sendry-python/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["sendry"]
