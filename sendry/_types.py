@@ -7,12 +7,7 @@ API responses use snake_case matching the JSON field names returned by the API.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Literal, Optional, Union
-
-try:
-    from typing import TypedDict
-except ImportError:
-    from typing_extensions import TypedDict  # type: ignore[no-redef]
+from typing import Any, Dict, List, Literal, Optional, TypedDict, Union
 
 
 # ---------------------------------------------------------------------------

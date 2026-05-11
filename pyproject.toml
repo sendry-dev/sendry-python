@@ -7,7 +7,8 @@ name = "sendry"
 version = "0.1.0"
 description = "The official Python SDK for the Sendry email API"
 readme = "README.md"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
+authors = [{ name = "Sendry", email = "support@sendry.online" }]
 requires-python = ">=3.9"
 keywords = ["email", "sendry", "api", "sdk", "transactional"]
 classifiers = [
@@ -44,6 +45,14 @@ Repository = "https://github.com/sendry/sendry-python"
 [tool.hatch.build.targets.wheel]
 packages = ["sendry"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "sendry",
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
@@ -51,3 +60,5 @@ testpaths = ["tests"]
 [tool.mypy]
 python_version = "3.9"
 strict = true
+warn_return_any = false
+disable_error_code = ["no-any-return"]

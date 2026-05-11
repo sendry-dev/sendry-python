@@ -26,7 +26,7 @@ from ._exceptions import (
     ValidationError,
 )
 
-DEFAULT_BASE_URL = "https://api.sendry.dev"
+DEFAULT_BASE_URL = "https://api.sendry.online"
 DEFAULT_TIMEOUT = 30.0
 DEFAULT_RETRIES = 3
 USER_AGENT = "sendry-python/0.1.0"

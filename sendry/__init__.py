@@ -94,7 +94,7 @@ class Sendry:
     Args:
         api_key: Your Sendry API key (e.g. ``sn_live_...`` or ``sn_test_...``).
         base_url: Override the default API base URL. Defaults to
-            ``https://api.sendry.dev``.
+            ``https://api.sendry.online``.
         timeout: Request timeout in seconds. Defaults to 30.
         retries: Number of retries for 5xx and network errors.
             Defaults to 3 (delays: 1s, 2s, 4s).
@@ -117,7 +117,7 @@ class Sendry:
         self,
         api_key: str,
         *,
-        base_url: str = "https://api.sendry.dev",
+        base_url: str = "https://api.sendry.online",
         timeout: float = 30.0,
         retries: int = 3,
         default_headers: Optional[Dict[str, str]] = None,
@@ -155,7 +155,7 @@ class AsyncSendry:
     Args:
         api_key: Your Sendry API key (e.g. ``sn_live_...`` or ``sn_test_...``).
         base_url: Override the default API base URL. Defaults to
-            ``https://api.sendry.dev``.
+            ``https://api.sendry.online``.
         timeout: Request timeout in seconds. Defaults to 30.
         retries: Number of retries for 5xx and network errors.
             Defaults to 3 (delays: 1s, 2s, 4s).
@@ -183,7 +183,7 @@ class AsyncSendry:
         self,
         api_key: str,
         *,
-        base_url: str = "https://api.sendry.dev",
+        base_url: str = "https://api.sendry.online",
         timeout: float = 30.0,
         retries: int = 3,
         default_headers: Optional[Dict[str, str]] = None,
