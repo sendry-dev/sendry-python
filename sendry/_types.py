@@ -972,6 +972,515 @@ class PaginationParams(TypedDict, total=False):
     cursor: str
 
 
+# ---------------------------------------------------------------------------
+# Dedicated IPs
+# ---------------------------------------------------------------------------
+
+
+class ProvisionDedicatedIpParams(TypedDict, total=False):
+    """Parameters for provisioning a dedicated IP."""
+
+    provider: Literal["ses", "mailgun"]
+
+
+class DedicatedIp(TypedDict):
+    """A dedicated IP address record."""
+
+    id: str
+    ip_address: Optional[str]
+    status: str
+    provider: str
+    warmup_progress: Optional[int]
+    created_at: str
+
+
+class AssignIpParams(TypedDict):
+    """Parameters for assigning a dedicated IP to a domain."""
+
+    domain_id: str
+
+
+class IpAssignment(TypedDict):
+    """A dedicated IP to domain assignment record."""
+
+    id: str
+    ip_id: str
+    domain_id: str
+    created_at: str
+
+
+# ---------------------------------------------------------------------------
+# Deliverability
+# ---------------------------------------------------------------------------
+
+
+class ReputationQuery(TypedDict, total=False):
+    """Query for reputation overview."""
+
+    domain_id: str
+    days: int
+
+
+class ReputationHistoryQuery(TypedDict, total=False):
+    """Query for reputation history."""
+
+    from_: str
+    to: str
+
+
+class ReputationSnapshot(TypedDict):
+    """A reputation snapshot."""
+
+    score: int
+    rating: str
+
+
+class ReputationResponse(TypedDict):
+    """Reputation overview response."""
+
+    current: ReputationSnapshot
+    history: List[Dict[str, Any]]
+    domains: List[Dict[str, Any]]
+
+
+class BlocklistQuery(TypedDict, total=False):
+    """Query for blocklist status."""
+
+    target: str
+    target_type: Literal["domain", "ip"]
+
+
+class BlocklistCheckBody(TypedDict):
+    """Body for running an on-demand blocklist check."""
+
+    target: str
+    target_type: Literal["domain", "ip"]
+
+
+class BlocklistResponse(TypedDict):
+    """Blocklist status response."""
+
+    results: List[Dict[str, Any]]
+    alerts: List[Dict[str, Any]]
+    summary: Dict[str, Any]
+
+
+class DeliverabilityReportQuery(TypedDict, total=False):
+    """Query for a deliverability report."""
+
+    domain_id: str
+    days: int
+
+
+class DeliverabilityReport(TypedDict):
+    """Comprehensive deliverability report."""
+
+    reputation: Dict[str, Any]
+    metrics: Dict[str, Any]
+    blocklist_status: Dict[str, Any]
+    recommendations: List[Dict[str, Any]]
+
+
+# ---------------------------------------------------------------------------
+# Inbound
+# ---------------------------------------------------------------------------
+
+
+class InboundEmail(TypedDict):
+    """An inbound email record."""
+
+    id: str
+    from_: str
+    to: str
+    subject: Optional[str]
+    html: Optional[str]
+    text: Optional[str]
+    attachments: Optional[List[Dict[str, Any]]]
+    received_at: str
+
+
+class InboundConfig(TypedDict):
+    """Inbound webhook forwarding configuration."""
+
+    url: Optional[str]
+    secret: Optional[str]
+
+
+class UpdateInboundConfigParams(TypedDict, total=False):
+    """Parameters for updating inbound webhook config."""
+
+    url: Optional[str]
+    secret: str
+
+
+# ---------------------------------------------------------------------------
+# Notification Preferences
+# ---------------------------------------------------------------------------
+
+
+class NotificationPreferences(TypedDict, total=False):
+    """User notification preferences."""
+
+    bounce_alerts: bool
+    complaint_alerts: bool
+    weekly_digest: bool
+    daily_summary: bool
+    reputation_alerts: bool
+    blocklist_alerts: bool
+
+
+class UpdateNotificationPreferencesParams(TypedDict, total=False):
+    """Parameters for updating notification preferences."""
+
+    bounce_alerts: bool
+    complaint_alerts: bool
+    weekly_digest: bool
+    daily_summary: bool
+    reputation_alerts: bool
+    blocklist_alerts: bool
+
+
+# ---------------------------------------------------------------------------
+# Organizations
+# ---------------------------------------------------------------------------
+
+
+class Organization(TypedDict):
+    """An organisation record."""
+
+    id: str
+    name: str
+    plan: str
+    created_at: str
+
+
+class UpdateOrganizationParams(TypedDict):
+    """Parameters for updating an organisation."""
+
+    name: str
+
+
+class BrandingSettings(TypedDict, total=False):
+    """Organisation branding settings."""
+
+    brand_color: str
+    brand_logo: Optional[str]
+    unsubscribe_copy: Optional[str]
+    footer_copy: Optional[str]
+
+
+class UpdateBrandingParams(TypedDict, total=False):
+    """Parameters for updating branding settings."""
+
+    brand_color: str
+    brand_logo: Optional[str]
+    unsubscribe_copy: Optional[str]
+    footer_copy: Optional[str]
+
+
+# ---------------------------------------------------------------------------
+# Regions
+# ---------------------------------------------------------------------------
+
+
+class Region(TypedDict):
+    """A SES region."""
+
+    region_code: str
+    display_name: str
+    active: bool
+
+
+DataResidency = Literal["none", "eu", "us", "ap"]
+
+
+class OrgRegionSettings(TypedDict):
+    """Org-level region settings."""
+
+    default_region: str
+    data_residency: str
+
+
+class UpdateOrgRegionParams(TypedDict, total=False):
+    """Parameters for updating org region settings."""
+
+    default_region: str
+    data_residency: DataResidency
+
+
+class UpdateDomainRegionParams(TypedDict):
+    """Parameters for setting a domain's region override."""
+
+    region: Optional[str]
+
+
+class RegionAnalyticsParams(TypedDict):
+    """Parameters for region analytics."""
+
+    from_: str
+    to: str
+
+
+class RegionAnalyticsResponse(TypedDict):
+    """Region analytics response."""
+
+    data: List[Dict[str, Any]]
+
+
+# ---------------------------------------------------------------------------
+# Status
+# ---------------------------------------------------------------------------
+
+
+class SystemStatus(TypedDict):
+    """Current system status."""
+
+    status: str
+    components: List[Dict[str, Any]]
+    incidents: List[Dict[str, Any]]
+    sla_summary: Dict[str, Any]
+
+
+class Incident(TypedDict):
+    """A resolved or active incident."""
+
+    id: str
+    title: str
+    status: str
+    impact: Optional[str]
+    started_at: str
+    resolved_at: Optional[str]
+
+
+class GetLatencyParams(TypedDict, total=False):
+    """Parameters for fetching latency stats."""
+
+    component: str
+    hours: int
+
+
+class LatencyStats(TypedDict):
+    """Latency statistics for a component."""
+
+    current_p50_ms: float
+    target_p50_ms: float
+    target_met: bool
+    hourly: List[Dict[str, Any]]
+
+
+# ---------------------------------------------------------------------------
+# Test Emails
+# ---------------------------------------------------------------------------
+
+
+class TestEmailSummary(TypedDict):
+    """A test email summary."""
+
+    id: str
+    subject: Optional[str]
+    from_: str
+    to: str
+    message_type: Optional[str]
+    created_at: str
+
+
+class TestEmail(TypedDict):
+    """A full test email record."""
+
+    id: str
+    subject: Optional[str]
+    from_: str
+    to: str
+    html: Optional[str]
+    text: Optional[str]
+    message_type: Optional[str]
+    headers: Optional[Dict[str, Any]]
+    created_at: str
+
+
+# ---------------------------------------------------------------------------
+# Automations
+# ---------------------------------------------------------------------------
+
+AutomationStatus = Literal["draft", "active", "paused", "archived"]
+AutomationTriggerType = Literal[
+    "event", "contact_added_to_segment", "schedule", "manual"
+]
+AutomationStepType = Literal["send_email", "wait", "branch", "ab_split"]
+AutomationReentryPolicy = Literal["once_per_contact", "cooldown", "always"]
+
+
+class Automation(TypedDict):
+    """An automation record."""
+
+    id: str
+    name: str
+    description: Optional[str]
+    status: str
+    trigger_type: str
+    trigger_config: Dict[str, Any]
+    entry_segment_id: Optional[str]
+    reentry_policy: str
+    reentry_cooldown_seconds: Optional[int]
+    total_runs: int
+    active_runs: int
+    completed_runs: int
+    failed_runs: int
+    created_at: str
+    updated_at: str
+
+
+class AutomationStep(TypedDict):
+    """A single step in an automation."""
+
+    id: str
+    automation_id: str
+    parent_step_id: Optional[str]
+    branch_label: Optional[str]
+    position: int
+    type: str
+    config: Dict[str, Any]
+    created_at: str
+    updated_at: str
+
+
+class AutomationRun(TypedDict):
+    """An automation run instance."""
+
+    id: str
+    automation_id: str
+    contact_id: Optional[str]
+    contact_email: str
+    trigger_event_id: Optional[str]
+    status: str
+    current_step_id: Optional[str]
+    context: Dict[str, Any]
+    started_at: str
+    completed_at: Optional[str]
+    failed_at: Optional[str]
+    failure_reason: Optional[str]
+    created_at: str
+    updated_at: str
+
+
+class AutomationRunStep(TypedDict):
+    """A single step execution within an automation run."""
+
+    id: str
+    run_id: str
+    step_id: str
+    status: str
+    email_id: Optional[str]
+    branch_taken: Optional[str]
+    scheduled_for: Optional[str]
+    started_at: Optional[str]
+    completed_at: Optional[str]
+    error: Optional[str]
+    created_at: str
+
+
+class CreateAutomationParams(TypedDict, total=False):
+    """Parameters for creating an automation."""
+
+    name: str
+    description: str
+    trigger_type: AutomationTriggerType
+    trigger_config: Dict[str, Any]
+    entry_segment_id: str
+    reentry_policy: AutomationReentryPolicy
+    reentry_cooldown_seconds: int
+
+
+class UpdateAutomationParams(TypedDict, total=False):
+    """Parameters for updating an automation."""
+
+    name: str
+    description: Optional[str]
+    trigger_config: Dict[str, Any]
+    entry_segment_id: Optional[str]
+    reentry_policy: AutomationReentryPolicy
+    reentry_cooldown_seconds: Optional[int]
+
+
+class ListAutomationsParams(TypedDict, total=False):
+    """Parameters for listing automations."""
+
+    cursor: str
+    status: AutomationStatus
+    limit: int
+
+
+class AddAutomationStepParams(TypedDict, total=False):
+    """Parameters for adding an automation step."""
+
+    parent_step_id: Optional[str]
+    branch_label: Optional[str]
+    position: int
+    config: Dict[str, Any]
+
+
+class UpdateAutomationStepParams(TypedDict, total=False):
+    """Parameters for updating an automation step."""
+
+    parent_step_id: Optional[str]
+    branch_label: Optional[str]
+    position: int
+    config: Dict[str, Any]
+
+
+class ListAutomationRunsParams(TypedDict, total=False):
+    """Parameters for listing automation runs."""
+
+    cursor: str
+    status: str
+    limit: int
+
+
+class CreateAutomationRunParams(TypedDict, total=False):
+    """Parameters for creating a manual automation run."""
+
+    contact_id: str
+    contact_email: str
+    context: Dict[str, Any]
+
+
+# ---------------------------------------------------------------------------
+# Events
+# ---------------------------------------------------------------------------
+
+
+class IngestEventParams(TypedDict, total=False):
+    """Parameters for ingesting an event."""
+
+    name: str
+    event_id: str
+    contact_email: str
+    contact_id: str
+    payload: Dict[str, Any]
+
+
+class IngestedEvent(TypedDict):
+    """An ingested event record."""
+
+    id: str
+    external_id: Optional[str]
+    name: str
+    contact_email: Optional[str]
+    contact_id: Optional[str]
+    payload: Dict[str, Any]
+    received_at: str
+    processed_at: Optional[str]
+    triggered_runs: int
+
+
+class ListEventsParams(TypedDict, total=False):
+    """Parameters for listing ingested events."""
+
+    cursor: str
+    name: str
+    limit: int
+
+
 __all__ = [
     # Shared
     "PaginatedResponse",
@@ -1079,4 +1588,67 @@ __all__ = [
     "ListTeamResponse",
     "InviteTeamMemberParams",
     "UpdateTeamMemberRoleParams",
+    # Dedicated IPs
+    "ProvisionDedicatedIpParams",
+    "DedicatedIp",
+    "AssignIpParams",
+    "IpAssignment",
+    # Deliverability
+    "ReputationQuery",
+    "ReputationHistoryQuery",
+    "ReputationSnapshot",
+    "ReputationResponse",
+    "BlocklistQuery",
+    "BlocklistCheckBody",
+    "BlocklistResponse",
+    "DeliverabilityReportQuery",
+    "DeliverabilityReport",
+    # Inbound
+    "InboundEmail",
+    "InboundConfig",
+    "UpdateInboundConfigParams",
+    # Notification Preferences
+    "NotificationPreferences",
+    "UpdateNotificationPreferencesParams",
+    # Organizations
+    "Organization",
+    "UpdateOrganizationParams",
+    "BrandingSettings",
+    "UpdateBrandingParams",
+    # Regions
+    "Region",
+    "DataResidency",
+    "OrgRegionSettings",
+    "UpdateOrgRegionParams",
+    "UpdateDomainRegionParams",
+    "RegionAnalyticsParams",
+    "RegionAnalyticsResponse",
+    # Status
+    "SystemStatus",
+    "Incident",
+    "GetLatencyParams",
+    "LatencyStats",
+    # Test Emails
+    "TestEmailSummary",
+    "TestEmail",
+    # Automations
+    "AutomationStatus",
+    "AutomationTriggerType",
+    "AutomationStepType",
+    "AutomationReentryPolicy",
+    "Automation",
+    "AutomationStep",
+    "AutomationRun",
+    "AutomationRunStep",
+    "CreateAutomationParams",
+    "UpdateAutomationParams",
+    "ListAutomationsParams",
+    "AddAutomationStepParams",
+    "UpdateAutomationStepParams",
+    "ListAutomationRunsParams",
+    "CreateAutomationRunParams",
+    # Events
+    "IngestEventParams",
+    "IngestedEvent",
+    "ListEventsParams",
 ]

@@ -29,7 +29,7 @@ from ._exceptions import (
 DEFAULT_BASE_URL = "https://api.sendry.online"
 DEFAULT_TIMEOUT = 30.0
 DEFAULT_RETRIES = 3
-USER_AGENT = "sendry-python/0.1.0"
+USER_AGENT = "sendry-python/0.2.0"
 
 # Backoff delays in seconds: 1s, 2s, 4s
 _BACKOFF_DELAYS = [1, 2, 4]
